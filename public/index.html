@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Users</title>
+  </head>
+  <body>
+    <h1>User List</h1>
+    <ul id="user-list"></ul>
+
+    <script>
+      const fetchUsers = async () => {
+        try {
+          const response = await fetch("/user/getUsers"); // 데이터 요청
+          const users = await response.json(); // JSON 데이터로 변환
+
+          const userList = document.getElementById("user-list");
+          users.forEach((user) => {
+            const li = document.createElement("li");
+            li.style.listStyle = "none";
+            li.style.padding = "20px 0";
+            li.style.borderBottom = "2px dashed #999";
+            li.innerHTML = `
+              <ul>
+                <li>"_id": ${user._id},</li>  
+                <li>"name": ${user.name},</li>  
+                <li>"email": ${user.email},</li>  
+                <li>"__v": ${user.__v},</li>  
+              </ul>
+            `;
+            userList.appendChild(li);
+          });
+        } catch (error) {
+          console.error("Error fetching users:", error);
+        }
+      };
+
+      // 함수 호출
+      fetchUsers();
+    </script>
+  </body>
+</html>
